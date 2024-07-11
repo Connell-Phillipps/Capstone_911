@@ -1,0 +1,6 @@
+[theme]
+primaryColor = "#f9c123"  #gold
+backgroundColor = "#01003c" # NYPD dark blue
+secondaryBackgroundColor = "#49acd5"  # lightblue
+textColor = "fbfcfc"  # off-white text
+font = "sans serif"
