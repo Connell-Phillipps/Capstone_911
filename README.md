@@ -1,9 +1,10 @@
-# 911 Hotspot Predictor
+# **NYC 911 Call Volume Forecasting**
 Author: Connell Phillipps <br><br>
+==================================
 
 
 ## 1 - **Project Overview**
-The goal of this project is to highlight and demonstrate the skills learned through BratinStations Data Science bootcamp. In this project, I aim to use data provided by NYC Open Data to create a predictive algorithm to show 911 call hot spots. The goal is to create a tool that could be used to station NYC service units in the most ideal locations to reduce response time and maximize unit placement efficiency. Broken down by NYC police precinct and providing a general overview of the entire NYC region, this project will be able to create a heat map to demonstrate 911 call hot spots.
+The goal of this project is to highlight and demonstrate the skills learned through BratinStations Data Science bootcamp. In this project, I used data provided by NYC Open Data to create a predictive algorithm to show 911 call hot spots. The goal, to create a tool that could be used to station NYC service units in the most ideal locations to reduce response time and maximize unit placement efficiency. Broken down by NYC police precinct and providing a general overview of the entire NYC region, this project can create a heat map to demonstrate 911 call hot spots.
 
 ### 1.1 - Problem Area
 When 911 calls come in, they can vary in importance and urgency. However, when a serious call is made, it is the goal of 911 operators to efficiently assign the closest responder to the situation. It can sometimes be a challenge to coordinate and ensure assets are allocated in the appropriate region to assure minimum response time. By using a trained algorithm, this project could cut down on response time and alleviate stress on already overworked 911 responders by ensuring the correct unit is always in the most optimal area for any given hour of any given day.
@@ -46,27 +47,42 @@ A future iteration could pull the latest dataset from NYC Open Data's website so
 |`INCIDENT_TIME`|Time of incident|incident_time|text|
 |`NYPD_PCT_CD`|NYPD precinct calls is in| nypd_pct_cd|Number|
 
+## 2 - Demo
+1. Download the project file from github
+1. Import the project enviornment to create a conda enviorment to run all files. Then activate the enviorment. In terminal copy the commands below
+    - ```conda env create --name environment --file=environments.yml```
+    - ```conda activate environment``` 
+1. In terminal navigate to the project file and then into the streamlit folder
+1. Run a local instance of the streamlit app to play around with
+    - ```streamlit run app.py```
+
+From here you are free to play around with the different tabs and discover more about the data for yourself!<br><br>
+Here are some exsamples of the working website:
+
+<img src=".\misc\home.png" height="400"><br>
+Home Page<br><br>
+<img src=".\misc\precinct_timeseries_heatmap.png" height="400"><br>
+Heatmap visualization<br><br>
+<img src=".\misc\deep_dive.png" height="400"><br>
+Deep Dive Data Investigation
 
 
-## 2 - Project Organization
-This project will be broken down in 2 main ways. First, this project was created during the course of the BrainStation DataScience Bootcamp, we had 3 sprint to finish the project and I want to preserve the stage of each sprint. For that reason the folder will be broken down into sprint 1-3, and a final finish project folder. If you wish to skip to the completed work look no further then the finish project folder, however, if you would like to see the process of how this project was created over the span of the bootcamp you can compare each sprint to one another.
-Secondly, As to avoid creating one massive notebook that contains all the work done I have broken the processing into smaller notebooks.
-1. `api_requesting` - This notebook starts the project off and walks through how to collect all the data needed for this project. This will also be helpful for returning back to and re-pulling the data off NYC open data's website when the update the information to help create more accurate predictions for the future.
-1. `cleaning` - In this notebook first we clean the data and currently at the time of writing this readme reduce the working file size from ~12GB to ~3GB. Along with smarter datatype picking it also removes redundant information and null values.
-1. `eda` - Here we will be taking a first look at the data and try to build an understanding of what the data is representing. In the data exploration stages it looks at the distribution of 911 calls by different metrics within the data as well as looking at the deviation from the mean to start the timeseries modeling and exploration of this project. Here is where we will begin crafting the story to tell about the data.
-1. `modeling` - This is the notebook for modeling. Here the project will set up a summarize hourly timeseries database broken into different locational granularities (Burrow, Precinct and lat/lon). The end product of this model will be a function that allows us to pass in a locational timeseries database populated with number of calls per of and output a forecast of how many calls each location will receive per hour. This will then be feed into a visualization tool to create a heatmap of the forecasted number of calls by location.
+## 3 - Project Organization
+* `notebooks` - The file contains all the working jupyter notebooks. These notebooks are the foundation of the project and if you would like to follow along I suggest starting there.
+    - `api_requesting` - This is the first step for the project. Here the data is pulled from NYC open data's website api and saved into a local csv to be imported in the following notebooks. Be careful this step can take an extremely long time as there are over 40 million rows to pull.
+    - `cleaning` - This notebook deals with cleaning the data. This consists of eliminating duplicate rows, redundant columns, and assigning data types to more efficiently store the data. This steps cuts the massive 12 GB file down to 3 GB and makes the rest of the project much easier. This is also the notebooks that deals with adding any engineered features such as response time to incident.
+    - `eda` - This notebook is the first look at the data, this is where insights and investigation into the larger data set take place. Here distributions comparisons are made to determine data consistency and inconsistencies to gain insights.
+    - `predictive_modeling` - This notebooks acts as the bulk of this project and is where the predictions are made. First by choosing a model based off RMSE then by running a separate model across all locations to predicts call volume by hour. This notebook details the steps that lead me to choosing the facebook prophet model for time series forecasting. The output is a .pkl file that contains a dictionary of each location with the actual and predicted call volumes by hour.
+    - `visualizations` - This is the pretty end product notebook that showcases the data forecasted above and displays in in a stunning heatmap for user consumption and understanding. Another warning here that the data takes a while to run through the heatmap and displaying calls by hour over more then a few days can take a very long time for the graphs to populate.
+* `reports` - This file contains the different presentation made during the progression of this project up to the final presentation which was given during a BrainStation Demo day. This is a great non-technical way to gain an understanding of the project and the steps taken to ultimately achieve the final product.
+* `sprints` - This file contains the different save points in the project. Sprint 1 being the first submission for this capstone project with sprint 3 being only 2 weeks before the final presentation. This again is more of a save state hold for anyone interested in the development of this project.
+* `streamlit` - This file contains what I consider the final product of this project. All steps before this are saved to a streamlit website which you can download and run to view the product displayed in the demo above. The Streamlit app is the most user friendly way to investigate the call data and the forecasting that was made. This would be my ideal tool for the NYPD to use to better assign there resources to reduce call response time.
 
+## 4- Next Steps
 
-
-
-## 3 - Streamlit
-### 3.1 - App Structure
-your_app/
-│
-├── app.py
-├── pages/
-│   ├── 1_Home.py
-│   ├── 2_Data_Info.py
-│   ├── 3_Visualization.py
-│   ├── 4_Deep_Dive.py
-│   └── 5_About_Me.py
+- [] Create a smaller subset of locationality for lat/lon to more accurately predict call locations
+- [] Further investigate full data set, its very large and there are more insights to be gathered in EDA
+- [] find and attach a population dataset for better investigation per capita
+    - [] Find a economic dataset by location to even further investigate economic call distribution by number/type of calls
+- [] When NYC open data updates call volumes update and re-run models to predict further into the future.
+    - [] Compare actual calls vs forecasted calls by previous model
